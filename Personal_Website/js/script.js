@@ -27,7 +27,8 @@ let pos = {
 
 let lastScrollPosY = 0;
 
-let containerPaper;
+let paperContainer;
+let paperContainerParams;
 let scrollStart;
 let scrollEnd;
 let scrollMap;
@@ -38,22 +39,23 @@ window.onload = function(event) {
     onResize();
 
     //Create the content divs
-    const CONTENT_NUM = 9;
+    const CONTENT_NUM = 30;
 
-    for (let i = -CONTENT_NUM + 1; i < CONTENT_NUM * 2 - 1; i++) {
+    for (let i = -CONTENT_NUM; i <= CONTENT_NUM * 2; i++) {
         if (i < 0 || i > CONTENT_NUM) {
             //create empty divs
             let div = document.createElement('div');
             div.classList.add('empty-sheet');
             document.getElementById('paper').appendChild(div);
+            div.style.height = `${div.getBoundingClientRect().height + 2}px` //compensate for the border on the items elements
         }
         
-        if (i >= 0 && i <= CONTENT_NUM) {
+        if (i > 0 && i <= CONTENT_NUM) {
             //create the content divs
             let divSheet = document.createElement('div');
             let divContainer = document.createElement('div');
-            let divItem = document.createElement('div');
-            
+            let divItem;
+
             divSheet.classList.add('sheet');
             divSheet.setAttribute('id', `sheet-${i}`);
             document.getElementById('paper').appendChild(divSheet);
@@ -62,31 +64,44 @@ window.onload = function(event) {
             divContainer.setAttribute('id', `item-container-${i}`);
             document.getElementById(`sheet-${i}`).appendChild(divContainer);
 
+            if (document.getElementById(`item-${i}`) === null) { //if element doesn't exist, create empty one
+                divItem = document.createElement('div');
+            } else {
+
+                divItem = document.getElementById(`item-${i}`);
+
+                divItem.classList.remove('item-invisible');
+
+            }
             divItem.classList.add('item');
             divItem.setAttribute('id', `item-${i}`);
             document.getElementById(`item-container-${i}`).appendChild(divItem);
-            
         }
     }
 
     //Place the paper at the right position (approx cause I didn't find a better way)
-    containerPaper = document.getElementById('paper-container');
-    let itemParams = document.getElementById('item-0').getBoundingClientRect();
+    paperContainer = document.getElementById('paper-container');
+    let emptySheetParams = document.getElementsByClassName('empty-sheet')[0].getBoundingClientRect();
     console.log(document.getElementById('paper-container').scrollHeight);
     //set scroll start and end
-    scrollStart = containerPaper.scrollHeight/4*3 - 30;
-    scrollEnd = containerPaper.scrollHeight/4;
+    let offset = emptySheetParams.height - rollHoleParams.top - rollHoleParams.height/2;
+    scrollStart = paperContainer.scrollHeight/3*2 + offset;
+    scrollEnd = paperContainer.scrollHeight/3 + offset;
 
     console.log(scrollStart, scrollEnd);
     console.log(`scrollEnd: ${scrollEnd}`);
-    containerPaper.scroll(0, scrollStart);
+    paperContainer.scroll(0, scrollStart);
 
     //Event listenner for scrolling
-    document.getElementById('paper-container').addEventListener('scroll', scrollHandler);
+    paperContainer.addEventListener('scroll', scrollHandler);
 }
 
-let rollRightSideStartWidth;
+let rollRightSideStart;
 function scrollHandler(event) {
+    if (paper.scrollTop < scrollEnd) {
+        paper.scrollTop = scrollEnd;
+    }
+
     let scrollSpeed = 3;
     let paperLine = document.getElementById("line");
     let paperLineParams = paperLine.getBoundingClientRect();
@@ -95,7 +110,10 @@ function scrollHandler(event) {
     //First time!
     if (!lastScrollPosY) {
         lastScrollPosY = paper.scrollTop;
-        rollRightSideStartWidth = rollRightSideParams.width;
+        rollRightSideStart = {
+            width: rollRightSideParams.width,
+            left: rollRightSideParams.left
+        }
     }
 
     if (paper.scrollTop > lastScrollPosY) {
@@ -108,23 +126,52 @@ function scrollHandler(event) {
 
      //checkOverflow
      if (paperLineParams.top < rollRightSideParams.top) {
-        paperLine.style.top = `${rollRightSideParams.bottom}px`;
+        paperLine.style.top = `${rollRightSideParams.bottom - 1}px`;
     }
     if (paperLineParams.top > rollRightSideParams.bottom) {
         paperLine.style.top = `${rollRightSideParams.top + 1}px`; //+1 to make sure it doesn't jump back on the next scrollevent
     }
 
+
     lastScrollPosY = paper.scrollTop;
     
     //Changing Roll Size
-    let w = map(paper.scrollTop, scrollEnd, scrollStart, rollHoleParams.width, rollRightSideStartWidth, true);
-    document.getElementById('roll-bright-side').style.width = `${w}px`;
-    document.getElementById('roll-bright-side').style.height = `${w}px`;
+    let rollW = map(
+        paper.scrollTop, 
+        scrollEnd, 
+        scrollStart, 
+        rollHoleParams.width, 
+        rollRightSideStart.width, 
+        true
+        );
+    document.getElementById('roll-bright-side').style.width = `${rollW}px`;
+    document.getElementById('roll-bright-side').style.height = `${rollW}px`;
+    
+    paperContainerParams = paperContainer.getBoundingClientRect();
+    let paperL = map(
+        paper.scrollTop, 
+        scrollEnd, 
+        scrollStart, 
+        rollDarkSideParams.left,
+        rollRightSideParams.left + rollRightSideStart.width - paperContainerParams.width,
+        true
+        );
+    paperContainer.style.left = `${rollRightSideParams.left + rollRightSideParams.width - paperContainerParams.width}px`;
 
-    //Recenter middle
-    reCenterRightSide();
-    //Adjust other parts
-    placeOtherRollParts();
+    // if (paper.scrollTop < scrollEnd) {
+    //     console.log('doinguit');
+    //     let rollMiddleParams = rollMiddle.getBoundingClientRect();
+    //     rollMiddle.style.top = `${rollMiddleParams.top - scrollSpeed}px`;
+    //     rollDarkSideParams = rollDarkSide.getBoundingClientRect();
+    //     rollDarkSide.style.top = `${rollDarkSideParams.top - scrollSpeed}px`;
+    // } else {
+        //Recenter middle
+        reCenterRightSide();
+        //Adjust other parts
+        placeOtherRollParts();
+    // }
+    
+    
 
 
 
@@ -191,6 +238,7 @@ document.getElementById('roll-dark-side').addEventListener('mousedown', mouseDow
 let rollHoleParams;
 let rollRightSide;
 let rollRightSideParams;
+let curtainRight;
 
 function onResize() {
     //building the roll
@@ -204,7 +252,7 @@ function onResize() {
     
     placeOtherRollParts();
 
-    let curtainRight = document.getElementById("curtain-right");
+    curtainRight = document.getElementById("curtain-right");
     curtainRight.style.top = `${rollRightSideParams.top}px`;
     curtainRight.style.left = `${rollRightSideParams.left + rollRightSideParams.width}px`;
     curtainRight.style.height = `${window.innerHeight}px`;
@@ -223,24 +271,35 @@ function onResize() {
 
 function reCenterRightSide() {
     rollRightSideParams = rollRightSide.getBoundingClientRect();
-    rollRightSide.style.top = `${rollHoleParams.top - rollRightSideParams.width/4}px`;
-    rollRightSide.style.left = `${rollHoleParams.left - rollRightSideParams.height/4}px`;
+    rollRightSide.style.top = `${rollHoleParams.top + rollHoleParams.height/2 - rollRightSideParams.height/2 }px`;
+    rollRightSide.style.left = `${rollHoleParams.left + rollHoleParams.width/2 - rollRightSideParams.width/2 }px`;
     rollRightSideParams = rollRightSide.getBoundingClientRect(); //update the params
 }
 
+let rollDarkSide;
+let rollDarkSideParams;
+let initialDarkSidePos;
+let rollMiddle;
+let firstPlacement = false;
 function placeOtherRollParts() {
     rollRightSideParams = rollRightSide.getBoundingClientRect();
+
+    if (!firstPlacement) {
+        initialDarkSidePos = rollRightSideParams.left - rollRightSideParams.width/2;
+        firstPlacement = true;
+    }
     
-    let rollDarkSide = document.getElementById("roll-dark-side");
+    rollDarkSide = document.getElementById("roll-dark-side");
     rollDarkSide.style.top = `${rollRightSideParams.top}px`;
-    rollDarkSide.style.left = `${rollRightSideParams.left - rollRightSideParams.width/2}px`;
+    rollDarkSide.style.left = `${initialDarkSidePos}px`;
     rollDarkSide.style.width = `${rollRightSideParams.width}px`;
     rollDarkSide.style.height = `${rollRightSideParams.height}px`;
 
-    let rollMiddle = document.getElementById("roll-middle");
+    rollDarkSideParams = rollDarkSide.getBoundingClientRect();
+    rollMiddle = document.getElementById("roll-middle");
     rollMiddle.style.top = `${rollRightSideParams.top}px`;
-    rollMiddle.style.left = `${rollRightSideParams.left}px`;
-    rollMiddle.style.width = `${rollRightSideParams.width/2}px`;
+    rollMiddle.style.left = `${rollDarkSideParams.left + rollDarkSideParams.width/2}px`;
+    rollMiddle.style.width = `${rollRightSideParams.left - rollDarkSideParams.left}px`;
     rollMiddle.style.height = `${rollRightSideParams.height}px`;
 
     let curtainTop = document.getElementById("curtain-top");
