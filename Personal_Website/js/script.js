@@ -1,23 +1,18 @@
 /**
 Site papier toilette
 Lucien Cusson-Fradet
-
--Make the toilet paper
--allow unrolling with mouse
--add titles or some shit
--click and get to the back I guess
 */
 
 "use strict";
 
-function setup() {
-    noCanvas();
-}
+//needed to use the "map()" p5 function
+function setup() {noCanvas();}
 function draw() {}
 
 //global variables
 let paper = document.getElementById('paper-container');
-let pos = {
+
+let pos = { //used to drag and drop with the mouse
     top: 0,
     left: 0,
     x: 0,
@@ -33,7 +28,7 @@ let scrollStart;
 let scrollEnd;
 let scrollMap;
 
-
+//setup the page onLoad
 window.onload = function(event) {
     window.addEventListener("resize", onResize);
     onResize();
@@ -64,6 +59,7 @@ window.onload = function(event) {
             divContainer.setAttribute('id', `item-container-${i}`);
             document.getElementById(`sheet-${i}`).appendChild(divContainer);
 
+            //check if the div exists, if so, don't create a new one, use it!
             if (document.getElementById(`item-${i}`) === null) { //if element doesn't exist, create empty one
                 divItem = document.createElement('div');
             } else {
@@ -82,22 +78,31 @@ window.onload = function(event) {
     //Place the paper at the right position (approx cause I didn't find a better way)
     paperContainer = document.getElementById('paper-container');
     let emptySheetParams = document.getElementsByClassName('empty-sheet')[0].getBoundingClientRect();
-    console.log(document.getElementById('paper-container').scrollHeight);
     //set scroll start and end
     let offset = emptySheetParams.height - rollHoleParams.top - rollHoleParams.height/2;
-    scrollStart = paperContainer.scrollHeight/3*2 + offset;
+    scrollStart = paperContainer.scrollHeight/3*2 + offset*2;
     scrollEnd = paperContainer.scrollHeight/3 + offset;
 
-    console.log(scrollStart, scrollEnd);
-    console.log(`scrollEnd: ${scrollEnd}`);
-    paperContainer.scroll(0, scrollStart);
+    paperContainer.scroll(0, scrollStart); //set the scroll starting pos
 
     //Event listenner for scrolling
     paperContainer.addEventListener('scroll', scrollHandler);
+
+    //add event handlers on the roll and paper
+    let visibleSheets = document.getElementsByClassName("sheet");
+    for (let i = 0; i < visibleSheets.length; i++) {
+        let sheet = visibleSheets[i];
+        sheet.addEventListener('mousedown', mouseDownHandler);
+    }
+    
+    document.getElementById('roll-middle').addEventListener('mousedown', mouseDownHandler);
+    document.getElementById('roll-dark-side').addEventListener('mousedown', mouseDownHandler);
 }
 
+//Reajust the shapes of the roll on every scroll event
 let rollRightSideStart;
 function scrollHandler(event) {
+    //limit the scroll to the scrollEnd
     if (paper.scrollTop < scrollEnd) {
         paper.scrollTop = scrollEnd;
     }
@@ -107,15 +112,16 @@ function scrollHandler(event) {
     let paperLineParams = paperLine.getBoundingClientRect();
     let rollRightSideParams = document.getElementById('roll-bright-side').getBoundingClientRect();
     
-    //First time!
+    //First time! 
     if (!lastScrollPosY) {
         lastScrollPosY = paper.scrollTop;
-        rollRightSideStart = {
+        rollRightSideStart = { //set the staring position of the shapes
             width: rollRightSideParams.width,
             left: rollRightSideParams.left
         }
     }
 
+    //move the line on the roll
     if (paper.scrollTop > lastScrollPosY) {
        //scrollUp event
        paperLine.style.top = `${paperLineParams.top + scrollSpeed}px`;
@@ -124,7 +130,7 @@ function scrollHandler(event) {
         paperLine.style.top = `${paperLineParams.top - scrollSpeed}px`;
     }
 
-     //checkOverflow
+     //checkOverflow and reset the line
      if (paperLineParams.top < rollRightSideParams.top) {
         paperLine.style.top = `${rollRightSideParams.bottom - 1}px`;
     }
@@ -133,59 +139,35 @@ function scrollHandler(event) {
     }
 
 
-    lastScrollPosY = paper.scrollTop;
+    lastScrollPosY = paper.scrollTop; //save the scroll for the next event
     
     //Changing Roll Size
-    let rollW = map(
+    let rollW = map( //p5.js map function
         paper.scrollTop, 
         scrollEnd, 
         scrollStart, 
         rollHoleParams.width, 
         rollRightSideStart.width, 
-        true
+        true //limit in bounds
         );
     document.getElementById('roll-bright-side').style.width = `${rollW}px`;
     document.getElementById('roll-bright-side').style.height = `${rollW}px`;
     
+    //set the paperContainer position
     paperContainerParams = paperContainer.getBoundingClientRect();
-    let paperL = map(
-        paper.scrollTop, 
-        scrollEnd, 
-        scrollStart, 
-        rollDarkSideParams.left,
-        rollRightSideParams.left + rollRightSideStart.width - paperContainerParams.width,
-        true
-        );
     paperContainer.style.left = `${rollRightSideParams.left + rollRightSideParams.width - paperContainerParams.width}px`;
 
-    // if (paper.scrollTop < scrollEnd) {
-    //     console.log('doinguit');
-    //     let rollMiddleParams = rollMiddle.getBoundingClientRect();
-    //     rollMiddle.style.top = `${rollMiddleParams.top - scrollSpeed}px`;
-    //     rollDarkSideParams = rollDarkSide.getBoundingClientRect();
-    //     rollDarkSide.style.top = `${rollDarkSideParams.top - scrollSpeed}px`;
-    // } else {
-        //Recenter middle
-        reCenterRightSide();
-        //Adjust other parts
-        placeOtherRollParts();
-    // }
-    
-    
-
-
-
-
-
-
-    if (document.getElementById('paper-container').scrollHeight < scrollEnd) {
-        
-    }
+    //Recenter middle
+    reCenterRightSide();
+    //Adjust other parts
+    placeOtherRollParts();
 }
 
 /*
     Drag-to-scroll tutorial found here:
     https://htmldom.dev/drag-to-scroll/
+
+    I should have removed the `left` cause I don't need it
 */  
 paper.scrollTop = 150;
 paper.scrollLeft = 100;
@@ -219,8 +201,6 @@ function mouseMoveHandler(event) {
         paper.scrollTop = pos.top - dy;
         paper.scrollLeft = pos.left - dx;
     }
-    
-    console.log(paper.scrollTop);
 }
 
 function mouseUpHandler() {
@@ -229,11 +209,6 @@ function mouseUpHandler() {
 
     paper.style.removeProperty('user-select');
 }
-
-//add event handlers on the roll and paper
-paper.addEventListener('mousedown', mouseDownHandler); //this one should only be on the visible sheets!
-document.getElementById('roll-middle').addEventListener('mousedown', mouseDownHandler);
-document.getElementById('roll-dark-side').addEventListener('mousedown', mouseDownHandler);
 
 let rollHoleParams;
 let rollRightSide;
@@ -281,6 +256,7 @@ let rollDarkSideParams;
 let initialDarkSidePos;
 let rollMiddle;
 let firstPlacement = false;
+
 function placeOtherRollParts() {
     rollRightSideParams = rollRightSide.getBoundingClientRect();
 
