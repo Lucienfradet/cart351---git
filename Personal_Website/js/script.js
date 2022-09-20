@@ -5,6 +5,8 @@ Lucien Cusson-Fradet
 
 "use strict";
 
+let device = deviceTypeDetect();
+
 //needed to use the "map()" p5 function
 function setup() {noCanvas();}
 function draw() {}
@@ -93,10 +95,13 @@ window.onload = function(event) {
     for (let i = 0; i < visibleSheets.length; i++) {
         let sheet = visibleSheets[i];
         sheet.addEventListener('mousedown', mouseDownHandler);
+        sheet.addEventListener('touchstart', mouseDownHandler);
     }
     
     document.getElementById('roll-middle').addEventListener('mousedown', mouseDownHandler);
+    document.getElementById('roll-middle').addEventListener('touchstart', mouseDownHandler);
     document.getElementById('roll-dark-side').addEventListener('mousedown', mouseDownHandler);
+    document.getElementById('roll-dark-side').addEventListener('touchstart', mouseDownHandler);
 }
 
 //Reajust the shapes of the roll on every scroll event
@@ -183,8 +188,15 @@ function mouseDownHandler(event) {
         elementCLicked: event.srcElement.id
     };
 
+    if (device !== "desktop" ) {
+        pos.x = event.touches[0].clientX;
+        pos.y = event.touches[0].clientY;
+    }
+
     document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('touchmove', mouseMoveHandler);
     document.addEventListener('mouseup', mouseUpHandler);
+    document.addEventListener('touchend', mouseUpHandler);
 }
 
 
@@ -192,6 +204,11 @@ function mouseMoveHandler(event) {
     // How far the mouse has been moved
     let dx = event.clientX - pos.x;
     let dy = event.clientY - pos.y;
+
+    if (device !== "desktop" ) {
+        dx = event.touches[0].clientX - pos.x;
+        dy = event.touches[0].clientY - pos.y;
+    }
 
     // Scroll the element
     if (pos.elementCLicked === 'roll-dark-side' || pos.elementCLicked === 'roll-middle') {
@@ -205,7 +222,9 @@ function mouseMoveHandler(event) {
 
 function mouseUpHandler() {
     document.removeEventListener('mousemove', mouseMoveHandler);
+    document.removeEventListener('touchmove', mouseMoveHandler);
     document.removeEventListener('mouseup', mouseUpHandler);
+    document.removeEventListener('touchend', mouseUpHandler);
 
     paper.style.removeProperty('user-select');
 }
@@ -282,3 +301,15 @@ function placeOtherRollParts() {
     curtainTop.style.bottom = `${-rollHoleParams.top + rollHoleParams.height/2}px`;
     curtainTop.style.height = `${window.innerHeight}px`;
 }
+
+//https://attacomsian.com/blog/javascript-detect-mobile-device#:~:text=To%20detect%20if%20the%20user,and%20platform%20of%20the%20browser.
+function deviceTypeDetect() {
+    const ua = navigator.userAgent;
+    if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+        return "tablet";
+    }
+    else if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+        return "mobile";
+    }
+    return "desktop";
+};
