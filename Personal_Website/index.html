@@ -11,6 +11,7 @@
 
     <!-- Library script(s) go here -->
     <script src="js/libraries/p5.min.js"></script>
+    <script src="js/libraries/perlin.js"></script>
   </head>
 
   <body>
@@ -30,7 +31,9 @@
         </div>
       </div>
       
-      
+      <div id="button-container">
+        <button id="exercice-1-button">Exercice 1</button>
+      </div>
       
     </div>
     
@@ -48,12 +51,18 @@
       <div class="content" id="propaganda-content">
         <h1 id="propaganda">Le 3 Octobre,<br>On vote Québec Solidaire!</h1>
       </div>
-  </div>
+    </div>
     
+    <div id="item-12" class="item-invisible">
+      <div class="content" id="canvas-content">
+        <canvas id="my-canvas"></canvas>
+      </div>
+    </div>
     
 
     <!-- My script(s) -->
     <script src="js/script.js"></script>
+    <script src="js/showFunctions.js"></script>
   </body>
 
 </html>

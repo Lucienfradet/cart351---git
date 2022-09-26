@@ -102,7 +102,25 @@ window.onload = function(event) {
     document.getElementById('roll-middle').addEventListener('touchstart', mouseDownHandler);
     document.getElementById('roll-dark-side').addEventListener('mousedown', mouseDownHandler);
     document.getElementById('roll-dark-side').addEventListener('touchstart', mouseDownHandler);
+
+    //button event listenners
+    document.getElementById("exercice-1-button").addEventListener('click', function() {
+        showElement('item-12');
+    });
+
+    //Canvas Exercice1
+    canvas = document.getElementById("my-canvas");
+    let canvasContentParams = document.getElementById("canvas-content").getBoundingClientRect();
+    canvas.width = canvasContentParams.width;
+    canvas.height = canvasContentParams.height;
+
+    context = canvas.getContext("2d");
+    context.fillStyle = "black";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
 }
+let canvas;
+let context;
 
 //Reajust the shapes of the roll on every scroll event
 let rollRightSideStart;
