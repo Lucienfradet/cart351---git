@@ -117,10 +117,21 @@ window.onload = function(event) {
     context = canvas.getContext("2d");
     context.fillStyle = "black";
     context.fillRect(0, 0, canvas.width, canvas.height);
+    shape = new Shape();
 
+    requestAnimationFrame(animate);
+}
+ 
+function animate() {
+//repaint with a black rect..
+context.fillStyle = "black";
+context.fillRect(0, 0, canvas.width, canvas.height);
+shape.draw();
+requestAnimationFrame(animate);
 }
 let canvas;
 let context;
+let shape;
 
 //Reajust the shapes of the roll on every scroll event
 let rollRightSideStart;
