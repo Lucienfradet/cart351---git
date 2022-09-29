@@ -108,43 +108,15 @@ window.onload = function(event) {
         showElement('item-12');
     });
 
-    //EXERCICE 1 START 
-    //**************************************************************************
-
-    //Canvas Exercice1
-    canvas = document.getElementById("my-canvas");
-    let canvasContentParams = document.getElementById("canvas-content").getBoundingClientRect();
-    canvas.width = canvasContentParams.width;
-    canvas.height = canvasContentParams.height;
-
-    context = canvas.getContext("2d");
-    context.fillStyle = "black";
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    shape[0] = new Shape("bottom");
-    shape[1] = new Shape("top");
-    canvas.addEventListener('click', function() {
-        for (let i = 0; i < shape.length; i++) {
-            shape[i].click();
-        }
-    });
-
-    requestAnimationFrame(animate);
+    exercice1AnimationSetup();
 }
- 
-function animate() {
-//repaint with a black rect..
-context.fillStyle = "#B4F609";
-context.fillRect(0, 0, canvas.width, canvas.height);
-for (let i = 0; i < shape.length; i++) {
-    shape[i].draw();
+
+function showElement(elementIdString) {
+    let myDivTopPos = document.getElementById(elementIdString).offsetTop;
+    myDivTopPos -= document.getElementById(elementIdString).getBoundingClientRect().height * 2;
+    paperContainer.scrollTop = myDivTopPos;
+    scrollHandler();
 }
-requestAnimationFrame(animate);
-}
-let canvas;
-let context;
-let shape = [];
-//**************************************************************************
-//EXERCICE 1 END
 
 //Reajust the shapes of the roll on every scroll event
 let rollRightSideStart;

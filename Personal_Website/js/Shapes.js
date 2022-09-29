@@ -85,7 +85,7 @@ class Shape {
     }
 
     click() {
-        this.acceleration = getRandomFloat(0.005, 0.01, 3);
+        this.acceleration = getRandomFloat(0.005, 0.01, 3); //func. can be found at the bottom of script.js
         this.clicked = true;
     }
 }
