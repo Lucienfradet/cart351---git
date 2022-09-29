@@ -108,6 +108,9 @@ window.onload = function(event) {
         showElement('item-12');
     });
 
+    //EXERCICE 1 START 
+    //**************************************************************************
+
     //Canvas Exercice1
     canvas = document.getElementById("my-canvas");
     let canvasContentParams = document.getElementById("canvas-content").getBoundingClientRect();
@@ -117,21 +120,31 @@ window.onload = function(event) {
     context = canvas.getContext("2d");
     context.fillStyle = "black";
     context.fillRect(0, 0, canvas.width, canvas.height);
-    shape = new Shape();
+    shape[0] = new Shape("bottom");
+    shape[1] = new Shape("top");
+    canvas.addEventListener('click', function() {
+        for (let i = 0; i < shape.length; i++) {
+            shape[i].click();
+        }
+    });
 
     requestAnimationFrame(animate);
 }
  
 function animate() {
 //repaint with a black rect..
-context.fillStyle = "black";
+context.fillStyle = "#B4F609";
 context.fillRect(0, 0, canvas.width, canvas.height);
-shape.draw();
+for (let i = 0; i < shape.length; i++) {
+    shape[i].draw();
+}
 requestAnimationFrame(animate);
 }
 let canvas;
 let context;
-let shape;
+let shape = [];
+//**************************************************************************
+//EXERCICE 1 END
 
 //Reajust the shapes of the roll on every scroll event
 let rollRightSideStart;
@@ -342,3 +355,9 @@ function deviceTypeDetect() {
     }
     return "desktop";
 };
+
+//https://bobbyhadz.com/blog/javascript-get-random-float-in-range
+function getRandomFloat(min, max, decimals) {
+    const str = (Math.random() * (max - min) + min).toFixed(decimals);
+    return parseFloat(str);
+  }
