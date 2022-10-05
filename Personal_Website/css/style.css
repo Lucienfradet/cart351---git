@@ -36,8 +36,8 @@ body {
 
 h1 {
     font-family: "Gazpacho Heavy";
-    text-align: center;
-    display:table-cell;
+    margin: 0;
+    transform: translate(0%, 0%);
     font-size: 2rem;
     color: #f75108;
 }
@@ -65,6 +65,9 @@ p {
     position: fixed;
     margin: 2rem;
     z-index: 150;
+    width: 15vw;
+    text-align: center;
+    visibility: hidden;
 }
 
 button {
@@ -73,6 +76,7 @@ button {
     font-family: "Gazpacho Heavy";
     color: #b9b9b9;
     font-size: 2vw;
+    margin-top: 0.5rem;
 }
 
 button:hover {
@@ -218,6 +222,6 @@ button:active {
 .content {
     height: 100%;
     width: 100%;
-    text-align: justify;
+    text-align: center;
     font-size: 2vw;
 }

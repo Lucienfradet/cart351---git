@@ -29,7 +29,8 @@ function animate() {
         shape[i].draw();
     }
     requestAnimationFrame(animate);
-    }
-    let canvas;
-    let context;
-    let shape = [];
+}
+
+let canvas;
+let context;
+let shape = [];

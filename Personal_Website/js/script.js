@@ -107,6 +107,9 @@ window.onload = function(event) {
     document.getElementById("exercice-1-button").addEventListener('click', function() {
         showElement('item-12');
     });
+    document.getElementById("palindrome-button").addEventListener('click', function() {
+        showElement('item-19');
+    });
 
     exercice1AnimationSetup();
 }
