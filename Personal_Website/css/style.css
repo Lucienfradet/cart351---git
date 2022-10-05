@@ -18,6 +18,10 @@ By default that's nothing.
     font-style: normal;
 }
 
+::selection {
+    background: rgb(82, 37, 0);
+  }
+
 body {
     background-color: black;
     top: 0px;
@@ -34,15 +38,21 @@ h1 {
     font-family: "Gazpacho Heavy";
     text-align: center;
     display:table-cell;
-    font-size: larger;
+    font-size: 2rem;
+    color: #f75108;
 }
 
-#propaganda {
+.propaganda {
     color: #f75108;
     vertical-align:middle;
+    font-family: "Gazpacho Heavy";
+    text-align: center;
+    display:table-cell;
+    font-size: 2rem;
+    color: #f75108;
 }
 
-#propaganda-content {
+.propaganda-content {
     display:table;
 }
 
@@ -200,7 +210,7 @@ button:active {
     /* border: 1px solid #cbd5e0; */
     font-size: 2.25rem;
     height: 15vw;
-    max-height: 350px;
+    max-height: 290px;
     margin: 2rem 0;
     width: 100%;
 }
