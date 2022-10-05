@@ -6,14 +6,14 @@ By default that's nothing.
 **********************************************/
 @font-face {
     font-family: "Gazpacho Heavy";
-    src: url("/assets/fonts/gazpacho/GazpachoHeavy.ttf") format('truetype');
+    src: url("../assets/fonts/gazpacho/GazpachoHeavy.ttf") format('truetype');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: "helvetica";
-    src: url("/assets/fonts/Helvetica.ttf") format('truetype');
+    src: url("../assets/fonts/Helvetica.ttf") format('truetype');
     font-weight: normal;
     font-style: normal;
 }
