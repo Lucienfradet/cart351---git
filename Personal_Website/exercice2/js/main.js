@@ -22,15 +22,19 @@ $(document).ready(function() {
             console.error("ERROR: failed to load data");
         });
     }
+    else {
+        console.log(data);
+    }
     
     
 });
 
+let wrapper;
+let entryWrapper;
 let dayInputMin;
 let dayInputMax;
-let submitRangeButton;
 function buildPage() {
-    let wrapper = $('<div>').addClass("wrapper").appendTo($('body'));
+    wrapper = $('<div>').addClass("wrapper").appendTo($('body'));
 
     dayInputMin = $("<input>").attr({
         name: 'input-day-min', 
@@ -47,19 +51,27 @@ function buildPage() {
         max: (data.catIntroduction1.data.length).toString()
     }).addClass("input-day").appendTo(wrapper);
 
-    submitRangeButton = $('<button>').attr({
+    $('<button>').attr({
         type: 'button',
         onclick: 'displayRange();'
     })
     .html('submit')
     .addClass("ex2-button").appendTo(wrapper);
+
+    entryWrapper = $('<div>').addClass("wrapper").appendTo($('body'));
+    $('<button>').attr({
+        type: 'button',
+        onclick: 'addNewData();'
+    })
+    .html('New Day Entry')
+    .addClass("ex2-button").appendTo(entryWrapper);
 }
 
 function displayRange() {
     let filteredResult = data.catIntroduction1.data.filter(getDays);
     
-    let container = $('<div>').addClass("container").appendTo($('body'));
-    let title = $('<h2>').html(`Proximity from day ${dayInputMin.val()} to day ${dayInputMax.val()}`).appendTo(container);
+    let container = $('<div>').addClass("container").appendTo(wrapper);
+    $('<h2>').html(`Proximity from day ${dayInputMin.val()} to day ${dayInputMax.val()}`).appendTo(container);
     let canvas = $('<canvas>').attr('id', "result-canvas").appendTo(container);
     console.log(container);
     let containerParams = container[0].getBoundingClientRect();
@@ -130,4 +142,148 @@ function determineCloseness(days) {
 
 function storeData(data) {
     localStorage.setItem(DATA_NAME, JSON.stringify(data));
+}
+
+let newEntryDay;
+let newEntryVisualContact;
+let newEntryFight;
+let newEntryScentContact;
+let newEntryPlay;
+let newEntrySleep;
+let newEntryWithoutVisual;
+let newEntryWithPartialVisual;
+let newEntryWithVisual;
+let newEntryWithoutBarrier;
+function addNewData() {
+    for (let i = 0; i < 10; i++) {
+        let element = $('<div>').addClass("submit-element").appendTo(entryWrapper);
+        let textDiv = $('<div>').addClass("submit-element-text").appendTo(element);
+        let contentDiv = $('<div>').addClass("submit-element-content").appendTo(element);
+
+        if (i === 0) {
+            $('<p>').html("What day are we at?").appendTo(textDiv);
+            let lastDayEntered = data.catIntroduction1.data[
+                    (data.catIntroduction1.data.length - 1) //last element
+                ].day + 1;
+            newEntryDay = $("<input>").attr({
+                name: 'entry-day', 
+                type: 'number',
+                min: lastDayEntered.toString(),
+                value: lastDayEntered.toString()
+            }).addClass("input-day").appendTo(contentDiv);
+        }
+
+        if (i === 1) {
+            $('<p>').html("Were the cats in contact with scent?").appendTo(textDiv);
+            newEntryScentContact = $("<input>").attr({
+                name: 'entry-scent', 
+                type: 'checkbox',
+            }).addClass("input-checkbox").appendTo(contentDiv);
+        }
+        
+        if (i === 2) {
+            $('<p>').html("Did the cats have visual contact whitout showing signs of agression?").appendTo(textDiv);
+            newEntryVisualContact = $("<input>").attr({
+                name: 'entry-visual', 
+                type: 'checkbox',
+            }).addClass("input-checkbox").appendTo(contentDiv);
+        }
+        
+        if (i === 3) {
+            $('<p>').html("Did the cats play together?").appendTo(textDiv);
+            newEntryPlay = $("<input>").attr({
+                name: 'entry-play', 
+                type: 'checkbox',
+            }).addClass("input-checkbox").appendTo(contentDiv);
+        }
+
+        if (i === 4) {
+            $('<p>').html("Did the cats sleep in proximity of eachother?").appendTo(textDiv);
+            newEntrySleep = $("<input>").attr({
+                name: 'entry-sleep', 
+                type: 'checkbox',
+            }).addClass("input-checkbox").appendTo(contentDiv);
+        }
+
+        if (i === 5) {
+            $('<p>').html("Did the cats fight? :(").appendTo(textDiv);
+            newEntryFight = $("<input>").attr({
+                name: 'entry-fight', 
+                type: 'checkbox',
+            }).addClass("input-checkbox").appendTo(contentDiv);
+        }
+
+        if (i === 6) {
+            $('<p>').html("Have the cats eaten in proximity of each other...").appendTo(element);
+            $('<p>').html("Without visual contact?").appendTo(textDiv);
+            newEntryWithoutVisual = $("<input>").attr({
+                name: 'entry-eatVisual', 
+                type: 'number',
+                min: '0',
+                value: '0'
+            }).addClass("input-day").appendTo(contentDiv);
+        }
+
+        if (i === 7) {
+            $('<p>').html("With partial visual contact?").appendTo(textDiv);
+            newEntryWithPartialVisual = $("<input>").attr({
+                name: 'entry-eatPartVisual',
+                type: 'number',
+                min: '0',
+                value: '0'
+            }).addClass("input-day").appendTo(contentDiv);
+        }
+
+        if (i === 8) {
+            $('<p>').html("With full visual contact?").appendTo(textDiv);
+            newEntryWithVisual = $("<input>").attr({
+                name: 'entry-eatFullVisual', 
+                type: 'number',
+                min: '0',
+                value: '0'
+            }).addClass("input-day").appendTo(contentDiv);
+        }
+
+        if (i === 9) {
+            $('<p>').html("Without a separating barrier?").appendTo(textDiv);
+            newEntryWithoutBarrier = $("<input>").attr({
+                name: 'entry-eatNoBarrier', 
+                type: 'number',
+                min: '0',
+                value: '0'
+            }).addClass("input-day").appendTo(contentDiv);
+        }
+    }
+
+    $('<button>').attr({
+        type: 'button',
+        onclick: 'submitNewData();'
+    })
+    .html('Submit')
+    .addClass("ex2-button").appendTo(entryWrapper);
+}
+
+function submitNewData() {
+    let newEntry = {
+        day: parseInt(newEntryDay.val()),
+        visualContact: newEntryVisualContact[0].checked,
+        fight: newEntryFight[0].checked,
+        scentContact: newEntryScentContact[0].checked,
+        play: newEntryPlay[0].checked,
+        sleep: newEntrySleep[0].checked,
+        eatenTogether: {
+            withoutVisual: parseInt(newEntryWithoutVisual.val()),
+            withPartialVisual: parseInt(newEntryWithPartialVisual.val()),
+            withVisual: parseInt(newEntryWithVisual.val()),
+            withoutBarrier: parseInt(newEntryWithoutBarrier.val())
+        }
+    }
+
+    data.catIntroduction1.data.push(newEntry);
+    localStorage.setItem(DATA_NAME, JSON.stringify(data));
+}
+
+//can be used in the console to clear the Data stored locally
+function clearLocalStorage() {
+    localStorage.removeItem(DATA_NAME);
 }

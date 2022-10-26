@@ -16,12 +16,12 @@
                 "scentContact": true,
                 "play": false,
                 "sleep": false,
-                "eatenTogether": [
-                    {"withoutVisual": 2},
-                    {"withPartialVisual": 0},
-                    {"withVisual": 0},
-                    {"withoutBarrier": 0}
-                ]
+                "eatenTogether": {
+                    "withoutVisual": 2,
+                    "withPartialVisual": 0,
+                    "withVisual": 0,
+                    "withoutBarrier": 0
+                }
             },
             {
                 "day": 2,
@@ -30,12 +30,12 @@
                 "scentContact": true,
                 "play": false,
                 "sleep": false,
-                "eatenTogether": [
-                    {"withoutVisual": 2},
-                    {"withPartialVisual": 0},
-                    {"withVisual": 0},
-                    {"withoutBarrier": 0}
-                ]
+                "eatenTogether": {
+                    "withoutVisual": 2,
+                    "withPartialVisual": 0,
+                    "withVisual": 0,
+                    "withoutBarrier": 0
+                }
             },
             {
                 "day": 3,
@@ -44,12 +44,12 @@
                 "scentContact": true,
                 "play": false,
                 "sleep": false,
-                "eatenTogether": [
-                    {"withoutVisual": 2},
-                    {"withPartialVisual": 0},
-                    {"withVisual": 0},
-                    {"withoutBarrier": 0}
-                ]
+                "eatenTogether": {
+                    "withoutVisual": 2,
+                    "withPartialVisual": 0,
+                    "withVisual": 0,
+                    "withoutBarrier": 0
+                }
             },
             {
                 "day": 4,
@@ -58,12 +58,12 @@
                 "scentContact": true,
                 "play": false,
                 "sleep": false,
-                "eatenTogether": [
-                    {"withoutVisual": 1},
-                    {"withPartialVisual": 1},
-                    {"withVisual": 0},
-                    {"withoutBarrier": 0}
-                ]
+                "eatenTogether": {
+                    "withoutVisual": 1,
+                    "withPartialVisual": 1,
+                    "withVisual": 0,
+                    "withoutBarrier": 0
+                }
             },
             {
                 "day": 5,
@@ -72,12 +72,12 @@
                 "scentContact": true,
                 "play": false,
                 "sleep": false,
-                "eatenTogether": [
-                    {"withoutVisual": 0},
-                    {"withPartialVisual": 2},
-                    {"withVisual": 0},
-                    {"withoutBarrier": 0}
-                ]
+                "eatenTogether": {
+                    "withoutVisual": 0,
+                    "withPartialVisual": 2,
+                    "withVisual": 0,
+                    "withoutBarrier": 0
+                }
             },
             {
                 "day": 6,
@@ -86,12 +86,12 @@
                 "scentContact": true,
                 "play": false,
                 "sleep": false,
-                "eatenTogether": [
-                    {"withoutVisual": 0},
-                    {"withPartialVisual": 0},
-                    {"withVisual": 2},
-                    {"withoutBarrier": 0}
-                ]
+                "eatenTogether": {
+                    "withoutVisual": 0,
+                    "withPartialVisual": 0,
+                    "withVisual": 2,
+                    "withoutBarrier": 0
+                }
             },
             {
                 "day": 7,
@@ -100,12 +100,12 @@
                 "scentContact": true,
                 "play": false,
                 "sleep": false,
-                "eatenTogether": [
-                    {"withoutVisual": 0},
-                    {"withPartialVisual": 0},
-                    {"withVisual": 0},
-                    {"withoutBarrier": 0}
-                ]
+                "eatenTogether": {
+                    "withoutVisual": 0,
+                    "withPartialVisual": 0,
+                    "withVisual": 0,
+                    "withoutBarrier": 0
+                }
             }
         ]
        
