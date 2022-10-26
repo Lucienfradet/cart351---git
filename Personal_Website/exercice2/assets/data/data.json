@@ -1,0 +1,28 @@
+{
+    "catIntroduction1": {
+        "cat1": {
+            "name": "Robert",
+            "age": 4
+        },
+        "cat2": {
+            "name": "René",
+            "age": 0.75
+        },
+        "data": [
+            {
+                "day": 1,
+                "visualContact": false,
+                "fight": false,
+                "scentContact": true,
+                "play": false,
+                "eatenTogether": [
+                    {}
+                ]
+            },
+            {
+
+            }
+        ]
+       
+    }    
+}
