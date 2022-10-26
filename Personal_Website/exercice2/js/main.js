@@ -1,17 +1,16 @@
+//name for the data in the localStorage
 const DATA_NAME = "cat_data_introduction";
 
 //needed to use the "map()" p5 function
 function setup() {noCanvas();}
 function draw() {}
 
-window.onload = function(){
-    
-}
-
 let data;
 $(document).ready(function() {
+    //fetching data in localStorage
     data = JSON.parse(localStorage.getItem(DATA_NAME));
 
+    //If there is none, get the JSON file
     if (data === null) {
         $.getJSON('assets/data/data.json', function(e){
             console.log(e);
@@ -22,13 +21,9 @@ $(document).ready(function() {
             console.error("ERROR: failed to load data");
         });
     }
-    else {
-        console.log(data);
-    }
-    
-    
 });
 
+//important html element stored as global variables
 let wrapper;
 let entryWrapper;
 let dayInputMin;
@@ -78,10 +73,12 @@ function displayRange() {
     canvas[0].width = containerParams.width;
     canvas[0].height = containerParams.height;
     context = canvas[0].getContext("2d");
-    context.fillStyle = "black";
-    context.fillRect(0, 0, canvas[0].width, canvas[0].height);
+    // context.fillStyle = "black";
+    // context.fillRect(0, 0, canvas[0].width, canvas[0].height);
 
-    let imgSize = 30;
+    let catimg1 = new Image();
+    catimg1.src = "assets/images/cat1.png"
+    let imgSize = 100;
     let cat1 = {
         x: 0 - imgSize/2 + canvas[0].width/10,
         y: canvas[0].height/2 - imgSize/2
@@ -93,22 +90,33 @@ function displayRange() {
 
     let closeness = determineCloseness(filteredResult);
     let Mappedcloseness = map(closeness, 0, 10, (cat2.x - cat1.x)/2, 0);
-    context.fillStyle = "white";
-    context.fillRect(cat1.x + Mappedcloseness, cat1.y, imgSize, imgSize);
+    catimg1.onload = function(){
+        context.drawImage(catimg1, cat1.x + Mappedcloseness, cat1.y, imgSize, imgSize);
+    };
 
-    context.fillStyle = "red";
-    context.fillRect(cat2.x - Mappedcloseness, cat2.y, imgSize, imgSize);
+    let catimg2 = new Image();
+    catimg2.src = "assets/images/cat2.png";
+    catimg2.onload = function(){
+        context.drawImage(catimg2, cat2.x - Mappedcloseness, cat2.y, imgSize, imgSize);
+    };
 
     //display a heart if very close
-    let heartSize = 10;
-    if (closeness <= 1) {
-        context.fillRect(canvas[0].width/2 - heartSize/2, canvas[0].height/6 - heartSize/2, heartSize, heartSize);
+    let heartSize = 50;
+    if (closeness <= 1 && closeness !== 0) {
+        let heartimg = new Image();
+        heartimg.src = "assets/images/heart.png";
+        heartimg.onload = function(){
+            context.drawImage(heartimg, canvas[0].width/2 - heartSize/2, canvas[0].height/6 - heartSize/2, heartSize, heartSize);
+        };
     }
     //display fusion if fusionned
-    let fusionSize = 10;
+    let fusionSize = 50;
     if (closeness === 0) {
-        context.fillStyle = "white";
-        context.fillRect(canvas[0].width/2 - fusionSize/2, canvas[0].height/6 - fusionSize/2, fusionSize, fusionSize);
+        let merge = new Image();
+        merge.src = "assets/images/merge.png";
+        merge.onload = function(){
+            context.drawImage(merge, canvas[0].width/2 - heartSize/2, canvas[0].height/8 - heartSize/2, fusionSize, fusionSize);
+        };
     }
 }
 
