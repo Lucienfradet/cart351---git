@@ -215,7 +215,7 @@ button:active {
     font-size: 2.25rem;
     height: 15vw;
     max-height: 290px;
-    margin: 2rem 0;
+    margin: 1.5rem 0;
     width: 100%;
 }
 
@@ -224,4 +224,34 @@ button:active {
     width: 100%;
     text-align: center;
     font-size: 2vw;
+}
+
+/* --------------------Exercice 2 CSS -------------------------- */
+#ex2-super-wrapper {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    font-size: 1vw;
+}
+.ex2-wrapper {
+    display:contents;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    font-size: 1vw;
+}
+
+.ex2-button {
+    margin: 1rem;
+}
+.input-day {
+    margin: 0.3rem;
+}
+
+h2 {
+    font-family: "Gazpacho Heavy";
+    margin: 0;
+    transform: translate(0%, 0%);
+    font-size: 1rem;
+    color: #f75108;
 }

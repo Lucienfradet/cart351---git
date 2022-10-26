@@ -1,5 +1,6 @@
 //name for the data in the localStorage
 const DATA_NAME = "cat_data_introduction";
+let divToAppendTheExerciceTo = $('#ex2-super-wrapper');
 
 //needed to use the "map()" p5 function
 function setup() {noCanvas();}
@@ -31,10 +32,10 @@ let entryWrapper;
 let dayInputMin;
 let dayInputMax;
 function buildPage() {
-    wrapper = $('<div>').addClass("ex2-wrapper").appendTo($('body'));
+    wrapper = $('<div>').addClass("ex2-wrapper").appendTo(divToAppendTheExerciceTo);
 
-    $('<h1>').html("").html("Cat Introduction record and visualizer").appendTo(wrapper);
-    $('<p>').html("").html("Assuming that you are following the classic 'slow and steady' cat introduction method, this allows you to visualize an approximity of your cat's closeness by inputing a day range.<br><br>For the sake of the exercice, the data has already been entered for the first 7 days. You can see how cat gradually got closser for the first 6 days. If the range is set from 1 to 7, the cat are further apart due to the fight they had that day.<br>New data can be submited and will be stored in LocalStorage. (As an unrealistic exemple, you can add an 8th day and check the 'cat played together' box and see how it will affect the visalisation.<br>Sadly function to select a different cat introduction or clear the data has not been implemented. It it still possible to clear the LocalStorage by executing the 'clearLocalStorage()' function in the console.<br><br>Note: This doesn't explain the method and is by no means a truly releiable way to tell if cats are ready to interact without constraints. (LOL)").appendTo(wrapper);
+    $('<h2>').html("").html("Cat Introduction record and visualizer").appendTo(wrapper);
+    $('<p>').html("").html("Assuming that you are following the classic 'slow and steady' cat introduction method, this allows you to visualize an approximation of your cat's closeness by inputing a day range.<br><br>For the sake of the exercice, the data has already been entered for the first 7 days. You can see how the cats got gradually closer for the first 6 days. If the range is set from 1 to 7, the cat are further apart due to the fight they had that day.<br>New data can be submited and will be stored in LocalStorage. (For exemple, you can add an 8th day and check the 'cat played together' box and see how it will affect the visalisation.<br><br>Sadly, functions to chose between different cat introductions or to clear the data have not been implemented. Although, it is possible to clear the LocalStorage data by executing the 'clearLocalStorage()' function in the console.<br><br>Note: This doesn't explain the method and is by no means a truly releiable way to tell if cats are ready to interact without constraints. (LOL)").appendTo(wrapper);
     
     //inputs for data visualization
     dayInputMin = $("<input>").attr({
@@ -61,7 +62,7 @@ function buildPage() {
     .addClass("ex2-button").appendTo(wrapper);
 
     //container for new entries
-    entryWrapper = $('<div>').addClass("ex2-wrapper").appendTo($('body'));
+    entryWrapper = $('<div>').addClass("ex2-wrapper").appendTo(divToAppendTheExerciceTo);
     $('<button>').attr({
         type: 'button',
         onclick: 'addNewData();'
@@ -74,30 +75,32 @@ function buildPage() {
 function displayRange() {
     let filteredResult = data.catIntroduction1.data.filter(getDays); //filter the results with day range
     
-    let container = $('<div>').addClass("container").appendTo(wrapper);
+    let container = $('<div>').addClass("ex2-container").appendTo(wrapper[0]);
     //title info
     $('<h2>').html(`Proximity from day ${dayInputMin.val()} to day ${dayInputMax.val()}`).appendTo(container);
 
     //create a canvas for display
-    let canvas = $('<canvas>').attr('id', "result-canvas").appendTo(container);
+    let Ex2Canvas = $('<canvas>').attr('id', "result-canvas").appendTo(container);
     let containerParams = container[0].getBoundingClientRect();
-    canvas[0].width = containerParams.width;
-    canvas[0].height = containerParams.height;
-    context = canvas[0].getContext("2d");
+    Ex2Canvas[0].width = containerParams.width;
+    Ex2Canvas[0].height = containerParams.height;
+    Ex2Context = Ex2Canvas[0].getContext("2d");
+    // Ex2Context.fillStyle = "black";
+    // Ex2Context.fillRect(0, 0, canvas.width, canvas.height);
 
     //prep images to be displyed
     let catimg1 = new Image();
     catimg1.src = "assets/images/cat1.png"
     let catimg2 = new Image();
     catimg2.src = "assets/images/cat2.png";
-    let imgSize = 100;
+    let imgSize = 75;
     let cat1 = {
-        x: 0 - imgSize/2 + canvas[0].width/10,
-        y: canvas[0].height/2 - imgSize/2
+        x: 0 - imgSize/2 + Ex2Canvas[0].width/10,
+        y: Ex2Canvas[0].height/2 - imgSize/2
     }
     let cat2 = {
-        x: canvas[0].width - imgSize/2 - canvas[0].width/10,
-        y: canvas[0].height/2 - imgSize/2
+        x: Ex2Canvas[0].width - imgSize/2 - Ex2Canvas[0].width/10,
+        y: Ex2Canvas[0].height/2 - imgSize/2
     }
 
     //determine the closeness of the cats using the data Provide a number between 0(close) and 10(not close)
@@ -107,11 +110,11 @@ function displayRange() {
     
     //draw the cats
     catimg1.onload = function(){
-        context.drawImage(catimg1, cat1.x + Mappedcloseness, cat1.y, imgSize, imgSize);
+        Ex2Context.drawImage(catimg1, cat1.x + Mappedcloseness, cat1.y, imgSize, imgSize);
     };
     
     catimg2.onload = function(){
-        context.drawImage(catimg2, cat2.x - Mappedcloseness, cat2.y, imgSize, imgSize);
+        Ex2Context.drawImage(catimg2, cat2.x - Mappedcloseness, cat2.y, imgSize, imgSize);
     };
 
     //display a heart if very close
@@ -120,7 +123,7 @@ function displayRange() {
         let heartimg = new Image();
         heartimg.src = "assets/images/heart.png";
         heartimg.onload = function(){
-            context.drawImage(heartimg, canvas[0].width/2 - heartSize/2, canvas[0].height/6 - heartSize/2, heartSize, heartSize);
+            Ex2Context.drawImage(heartimg, Ex2Canvas[0].width/2 - heartSize/2, Ex2Canvas[0].height/6 - heartSize/2, heartSize, heartSize);
         };
     }
     //display fusion if fusionned
@@ -129,7 +132,7 @@ function displayRange() {
         let merge = new Image();
         merge.src = "assets/images/merge.png";
         merge.onload = function(){
-            context.drawImage(merge, canvas[0].width/2 - heartSize/2, canvas[0].height/8 - heartSize/2, fusionSize, fusionSize);
+            Ex2Context.drawImage(merge, Ex2Canvas[0].width/2 - heartSize/2, Ex2Canvas[0].height/8 - heartSize/2, fusionSize, fusionSize);
         };
     }
 }

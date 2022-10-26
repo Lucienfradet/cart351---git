@@ -1,0 +1,113 @@
+{
+    "catIntroduction1": {
+        "cat1": {
+            "name": "Robert",
+            "age": 4
+        },
+        "cat2": {
+            "name": "René",
+            "age": 0.75
+        },
+        "data": [
+            {
+                "day": 1,
+                "visualContact": false,
+                "fight": false,
+                "scentContact": true,
+                "play": false,
+                "sleep": false,
+                "eatenTogether": {
+                    "withoutVisual": 2,
+                    "withPartialVisual": 0,
+                    "withVisual": 0,
+                    "withoutBarrier": 0
+                }
+            },
+            {
+                "day": 2,
+                "visualContact": false,
+                "fight": false,
+                "scentContact": true,
+                "play": false,
+                "sleep": false,
+                "eatenTogether": {
+                    "withoutVisual": 2,
+                    "withPartialVisual": 0,
+                    "withVisual": 0,
+                    "withoutBarrier": 0
+                }
+            },
+            {
+                "day": 3,
+                "visualContact": true,
+                "fight": false,
+                "scentContact": true,
+                "play": false,
+                "sleep": false,
+                "eatenTogether": {
+                    "withoutVisual": 2,
+                    "withPartialVisual": 0,
+                    "withVisual": 0,
+                    "withoutBarrier": 0
+                }
+            },
+            {
+                "day": 4,
+                "visualContact": true,
+                "fight": false,
+                "scentContact": true,
+                "play": false,
+                "sleep": false,
+                "eatenTogether": {
+                    "withoutVisual": 1,
+                    "withPartialVisual": 1,
+                    "withVisual": 0,
+                    "withoutBarrier": 0
+                }
+            },
+            {
+                "day": 5,
+                "visualContact": true,
+                "fight": false,
+                "scentContact": true,
+                "play": false,
+                "sleep": false,
+                "eatenTogether": {
+                    "withoutVisual": 0,
+                    "withPartialVisual": 2,
+                    "withVisual": 0,
+                    "withoutBarrier": 0
+                }
+            },
+            {
+                "day": 6,
+                "visualContact": true,
+                "fight": false,
+                "scentContact": true,
+                "play": false,
+                "sleep": false,
+                "eatenTogether": {
+                    "withoutVisual": 0,
+                    "withPartialVisual": 0,
+                    "withVisual": 2,
+                    "withoutBarrier": 0
+                }
+            },
+            {
+                "day": 7,
+                "visualContact": false,
+                "fight": true,
+                "scentContact": true,
+                "play": false,
+                "sleep": false,
+                "eatenTogether": {
+                    "withoutVisual": 0,
+                    "withPartialVisual": 0,
+                    "withVisual": 0,
+                    "withoutBarrier": 0
+                }
+            }
+        ]
+       
+    }    
+}

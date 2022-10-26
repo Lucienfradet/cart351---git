@@ -1,4 +1,5 @@
 //Exercie1 
+let animateBool = true;
 
 function exercice1AnimationSetup() {
     //Canvas Exercice1
@@ -13,12 +14,14 @@ function exercice1AnimationSetup() {
     shape[0] = new Shape("bottom");
     shape[1] = new Shape("top");
     canvas.addEventListener('click', function() {
+        if (animateBool) {
+            requestAnimationFrame(animate);
+            animateBool = false;
+        }
         for (let i = 0; i < shape.length; i++) {
             shape[i].click();
         }
     });
-
-    requestAnimationFrame(animate);
 }
 
 function animate() {
