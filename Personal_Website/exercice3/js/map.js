@@ -79,6 +79,29 @@ async function createMap() {
 
     map.on('dblclick', addMarker);
 
+    //for touch screens
+    let touchInterval;
+    let timer = 0;
+    map.on('touchstart', function(e) {
+      console.log(e);
+      touchInterval = setInterval(() => {
+        timer++;
+      }, 17);
+    });
+    map.on('touchend', function(e) {
+      console.log(e);
+      console.log(timer);
+      clearInterval(touchInterval);
+      if (timer > 15) {
+        addMarker(e);
+      }
+
+      timer = 0;
+    });
+    map.on('touchmove', () => {
+      timer = 0;
+    });
+
     function displayPopUp(coordinates, description) {
       const options = {
         maxWidth: '80vw'
@@ -222,6 +245,7 @@ async function getMapToken() {
 }
 
 function addMarker(event) {
+  console.log(event);
   //remove previous one
   if (marker !== undefined) {
     marker.remove();
