@@ -66,7 +66,7 @@
           Une application pour cartographier et partager ses randonnées préférées!
         </h1>
         <p key="geoloc-text">
-          Assure toi d'avoir double-cliqué sur la carte à l'endroit approximatif où se trouve ta randonnée préféré avant de continuer<br>
+          Assure toi d'avoir double-cliqué (ou 'toucher et tenir' sur mobile) sur la carte à l'endroit approximatif où se trouve ta randonnée préféré avant de continuer<br>
         </p>
 
         <button type="button" onclick="geolocNext();" id="geoloc-next-button" key= "geoloc-next-button">
