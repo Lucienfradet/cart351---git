@@ -69,6 +69,7 @@ $("#recipe-next-button").on('click', async (e) =>{
     await sendUserData() //publish data from the user!
     marker.remove();
     resetMap();
+    timer = 0;
 });
 
 //dowload and refresh the data from the database including the one from the user
